@@ -2,6 +2,14 @@
 
 name: CI
 
+env:
+  MYSQL_DATABASE: "Rfam"
+  MYSQL_ROOT_PASSWORD: ""
+  MYSQL_USER: "rfamro"
+  MYSQL_PASSWORD: ""
+  MYSQL_HOST: "mysql-rfam-public.ebi.ac.uk"
+  MYSQL_PORT: "4497"
+
 # Controls when the workflow will run
 on:
   # Triggers the workflow on push or pull request events but only for the main branch
@@ -35,7 +43,7 @@ jobs:
         
       # Runs a single command using the runners shell
       - name: Run a one-line script
-        run: echo Hello, world!
+        run: echo "SHOW tables;"| mysql -u "$MYSQL_USER" -h "${MYSQL_HOST}" --port "${MYSQL_PORT}" --database "${MYSQL_DATABASE}"
 
       # Runs a set of commands using the runners shell
       - name: Run a multi-line script
