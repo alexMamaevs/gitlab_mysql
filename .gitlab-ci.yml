@@ -6,7 +6,7 @@ variables:
       MYSQL_HOST: "mysql-rfam-public.ebi.ac.uk"
       MYSQL_PORT: "4497"
  
- test:
+test:
   image: python:latest
   stage: test
   services:
