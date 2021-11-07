@@ -21,3 +21,4 @@ test:
     - merge_requests
   environment:
     name: test
+
