@@ -1,0 +1,23 @@
+variables:
+      MYSQL_DATABASE: "Rfam"
+      MYSQL_ROOT_PASSWORD: ""
+      MYSQL_USER: "rfamro"
+      MYSQL_PASSWORD: ""
+      MYSQL_HOST: "mysql-rfam-public.ebi.ac.uk"
+      MYSQL_PORT: "4497"
+ 
+ test:
+  image: python:latest
+  stage: test
+  services:
+    - mysql:5.7
+  script:
+    - apt-get update && apt-get install -y git curl libmcrypt-dev default-mysql-client
+    - mysql --version
+    - sleep 20
+    - echo "SHOW tables;"| mysql -u "$MYSQL_USER" -p"$MYSQL_PASSWORD" -h "${MYSQL_HOST}" "${MYSQL_DATABASE}"
+    - echo "DB host is "${DB_HOST}""
+  only:
+    - merge_requests
+  environment:
+    name: test
