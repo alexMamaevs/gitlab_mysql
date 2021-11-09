@@ -5,6 +5,7 @@ variables:
       MYSQL_PASSWORD: ""
       MYSQL_HOST: "mysql-rfam-public.ebi.ac.uk"
       MYSQL_PORT: "4497"
+      out_data: ""
  
 test:
   image: python:latest
@@ -15,8 +16,10 @@ test:
     - apt-get update && apt-get install -y git curl libmcrypt-dev default-mysql-client
     - mysql --version
     - sleep 20
-    ##- echo "SHOW tables;"| mysql -u "$MYSQL_USER" -p"$MYSQL_PASSWORD" -host "${MYSQL_HOST}" --port "${MYSQL_PORT}" --database "${MYSQL_DATABASE}"
-    - echo "SHOW tables;"| mysql -u "$MYSQL_USER" -host "${MYSQL_HOST}" --port "${MYSQL_PORT}" --database "${MYSQL_DATABASE}"
+    - echo "SHOW tables;"| mysql -u "$MYSQL_USER" -h "${MYSQL_HOST}" --port "${MYSQL_PORT}" --database "${MYSQL_DATABASE}"
     - echo "DB host is "${DB_HOST}""
+    - echo "select * from fr.fram_acc limit 1;" | mysql -u "$MYSQL_USER" -h "${MYSQL_HOST}" --port "${MYSQL_PORT}" --database "${MYSQL_DATABASE}"  
+    - echo "SELECT fr.rfam_acc, fr.rfamseq_acc, fr.seq_start, fr.seq_end FROM full_region fr, rfamseq rf, taxonomy tx WHERE rf.ncbi_id = tx.ncbi_id AND fr.rfamseq_acc = rf.rfamseq_acc AND tx.ncbi_id = 10116 -- NCBI taxonomy id of Rattus norvegicus AND is_significant = 1 -- exclude low-scoring matches from the same clan" | mysql -u "$MYSQL_USER" -h "${MYSQL_HOST}" --port "${MYSQL_PORT}" --database "${MYSQL_DATABASE}"  
+
   environment:
     name: test
